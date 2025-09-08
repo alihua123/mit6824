@@ -1,9 +1,5 @@
 package mr
 
-import (
-	"os"
-	"strconv"
-)
 
 // RPC definitions.
 
@@ -24,12 +20,7 @@ type TaskCompletedArgs struct {
 type TaskCompletedReply struct {
 }
 
-// Cook up a unique-ish UNIX-domain socket name
-// in /var/tmp, for the coordinator.
-// Can't use the current directory since
-// Athena AFS doesn't support UNIX-domain sockets.
+// 修改为返回TCP地址而不是Unix套接字路径
 func coordinatorSock() string {
-	s := "/var/tmp/824-mr-"
-	s += strconv.Itoa(os.Getuid())
-	return s
+	return "localhost:1234"
 }

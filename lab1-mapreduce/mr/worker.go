@@ -59,7 +59,7 @@ func requestTask() Task {
 	args := GetTaskArgs{}
 	reply := GetTaskReply{}
 
-	ok := call("Coordinator.GetTask", &args, &reply)
+	ok := Call("Coordinator.GetTask", &args, &reply)
 	if !ok {
 		log.Fatal("Failed to contact coordinator")
 	}
@@ -179,16 +179,16 @@ func notifyTaskCompletion(taskType TaskType, taskId int) {
 	}
 	reply := TaskCompletedReply{}
 
-	call("Coordinator.TaskCompleted", &args, &reply)
+	Call("Coordinator.TaskCompleted", &args, &reply)
 }
 
 // send an RPC request to the coordinator, wait for the response.
 // usually returns true.
 // returns false if something goes wrong.
-func call(rpcname string, args interface{}, reply interface{}) bool {
-	// c, err := rpc.DialHTTP("tcp", "127.0.0.1"+":1234")
+func Call(rpcname string, args interface{}, reply interface{}) bool {
+	// 使用TCP协议连接
 	sockname := coordinatorSock()
-	c, err := rpc.DialHTTP("unix", sockname)
+	c, err := rpc.DialHTTP("tcp", sockname)
 	if err != nil {
 		log.Fatal("dialing:", err)
 	}

@@ -6,7 +6,6 @@ import (
 	"net"
 	"net/http"
 	"net/rpc"
-	"os"
 	"sync"
 	"time"
 )
@@ -156,10 +155,8 @@ func (c *Coordinator) checkAllCompletion() {
 func (c *Coordinator) server() {
 	rpc.Register(c)
 	rpc.HandleHTTP()
+	// 在Windows上使用TCP而不是Unix域套接字
 	l, e := net.Listen("tcp", ":1234")
-	sockname := coordinatorSock()
-	os.Remove(sockname)
-	l, e = net.Listen("unix", sockname)
 	if e != nil {
 		log.Fatal("listen error:", e)
 	}
